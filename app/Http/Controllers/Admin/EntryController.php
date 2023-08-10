@@ -15,10 +15,23 @@ class EntryController extends Controller
        $this->entryService = $entryService;    
     }
 
-    public function getAll()
+    //show list member
+    public function getAll(Request $request)
     {
-        // dd($this->entryService->getAll());
+        return view('admin.member.index', $this->entryService->getAll($request->all()));
+    }
 
-        return view('admin.member.index', $this->entryService->getAll());
+    //Redirect to view edit
+    public function findMember($id)
+    {
+        $entry = $this->entryService->find($id);
+
+        return view('admin.member.edit', compact('entry'));
+    }
+
+    //dowload csv
+    public function downloadCsv(Request $request)
+    {
+        $this->entryService->downloadCsv($request->all());
     }
 }

@@ -13,5 +13,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function() {
+    return redirect()->route('entry.index');
+});
 
-Route::get('/', [EntryController::class, 'getAll']);
+Route::prefix('admin')->group(function() {
+    Route::get('/member', [EntryController::class, 'getAll'])->name('entry.index');
+    Route::get('/member/form/{id}', [EntryController::class, 'findMember'])->name('entry.edit');
+    Route::get('/member/download-csv', [EntryController::class, 'downloadCsv'])->name('entry.download-csv');
+});

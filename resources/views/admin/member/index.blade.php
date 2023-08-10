@@ -22,21 +22,21 @@
         </div>
         <nav class="main-header__navGlobal">
             <ul class="main-header__menu" role="list">
-                <li class="main-header__menu-item"><a href="../point/"
+                <li class="main-header__menu-item"><a href=""
                         class="main-header__link"><span>ポイントエネルギー</span></a></li>
-                <li class="main-header__menu-item"><a href="../application/"
-                        class="main-header__link"><span>お申し込み管理</span></a></li>
-                <li class="main-header__menu-item"><a href="../member/"
-                        class="main-header__link is-active"><span>会員管理</span></a></li>
-                <li class="main-header__menu-item"><a href="../contact/"
-                        class="main-header__link"><span>お問い合わせ管理</span></a></li>
-                <li class="main-header__menu-item"><a href="../banner/" class="main-header__link"><span>バナー管理</span></a>
+                <li class="main-header__menu-item"><a href="" class="main-header__link"><span>お申し込み管理</span></a>
                 </li>
-                <li class="main-header__menu-item"><a href="../master/"
-                        class="main-header__link"><span>マスター管理</span></a></li>
-                <li class="main-header__menu-item"><a href="../account/"
-                        class="main-header__link"><span>アカウント管理</span></a></li>
-                <li class="main-header__menu-item logout"><a href="../login/"
+                <li class="main-header__menu-item"><a href="/"
+                        class="main-header__link is-active"><span>会員管理</span></a></li>
+                <li class="main-header__menu-item"><a href="" class="main-header__link"><span>お問い合わせ管理</span></a>
+                </li>
+                <li class="main-header__menu-item"><a href="" class="main-header__link"><span>バナー管理</span></a>
+                </li>
+                <li class="main-header__menu-item"><a href="" class="main-header__link"><span>マスター管理</span></a>
+                </li>
+                <li class="main-header__menu-item"><a href="" class="main-header__link"><span>アカウント管理</span></a>
+                </li>
+                <li class="main-header__menu-item logout"><a href=""
                         class="main-header__link"><span>ログアウト</span></a></li>
             </ul>
         </nav>
@@ -44,22 +44,22 @@
     <main id="page-member" class="wrapper">
         <div class="main-content">
             <h1 class="c-ttl__01">会員一覧</h1>
-            <form action="">
+            <form action="" method="get">
                 <div class="sort-block form-block sort-member">
                     <div class="sort-block__clmL">
                         <div class="sort-block__item">
                             <div class="sort-block__item-head">物件</div>
-                            <input type="text" name="">
+                            <input type="text" name="building_name">
                         </div>
                         <div class="sort-block__item">
                             <div class="sort-block__item-head">部屋No.</div>
-                            <input type="text" name="">
+                            <input type="text" name="room_number">
                         </div>
                         <div class="sort-block__item">
                             <div class="sort-block__item-head">エントリー氏名</div>
                             <div class="input-name">
-                                <div class="clm">姓<input type="text" name="" class="--s"></div>
-                                <div class="clm">名<input type="text" name="" class="--s"></div>
+                                <div class="clm">姓<input type="text" name="last_name" class="--s"></div>
+                                <div class="clm">名<input type="text" name="first_name" class="--s"></div>
                             </div>
                         </div>
                         <div class="sort-block__item">
@@ -95,7 +95,7 @@
                 </div>
             </form>
             <div class="table-block">
-                <p class="table-block__total">1-100件（合計88,888,888件）</p>
+                <p class="table-block__total">1-100件（合計{{ $total }}件）</p>
                 <div class="table-block__scroll">
                     <div class="table-sticky">
                         <table class="table-member c-table__02">
@@ -115,21 +115,22 @@
                                 <tr>
                                     <td class="c-table__02-cont">
                                         <div class="btn-box">
-                                            <a href="../member/form/" class="c-btn__02"><i
-                                                    class="fa-solid fa-pen-to-square"></i></a>
+                                            <a href="{{ route('entry.edit', ['id' => $entry->id]) }}"
+                                                class="c-btn__02"><i class="fa-solid fa-pen-to-square"></i></a>
                                             <button type="file" class="c-btn__02"
                                                 data-micromodal-trigger="modal-3">Point履歴</button>
                                         </div>
                                     </td>
-                                    <td class="c-table__02-cont">888888</td>
-                                    <td class="c-table__02-cont">2023.2.20 10:15</td>
-                                    <td class="c-table__02-cont">杉並久我山</td>
-                                    <td class="c-table__02-cont">201</td>
+                                    <td class="c-table__02-cont">{{ $entry->id }}</td>
+                                    <td class="c-table__02-cont">{{ $entry->updated_at->format('Y-m-d H:i') }}</td>
+                                    <td class="c-table__02-cont">{{ $entry->building->buildingNameJapanese }}</td>
+                                    <td class="c-table__02-cont">{{ $entry->room->room_number }}</td>
                                     <td class="c-table__02-cont">空き</td>
-                                    <td class="c-table__02-cont">小野寺</td>
-                                    <td class="c-table__02-cont">志津恵</td>
-                                    <td class="c-table__02-cont">2023.88.88</td>
-                                    <td class="c-table__02-cont">88人</td>
+                                    <td class="c-table__02-cont">{{ $entry->representative_lastname }}</td>
+                                    <td class="c-table__02-cont">{{ $entry->representative_firstname }}</td>
+                                    <td class="c-table__02-cont">
+                                        {{ Carbon::parse($entry->representative_birthdate)->format('Y.m.d') }} </td>
+                                    <td class="c-table__02-cont">{{ $entry->resident->residents_count }}人</td>
                                 </tr>
                             @endforeach
                         </table>
@@ -137,8 +138,7 @@
                 </div>
             </div>
             <div class="ft-controls">
-                <button class="c-btn --bl --m" data-micromodal-trigger="modal-2"><i
-                        class="fa-solid fa-download"></i>ダウンロード</button>
+                <button class="c-btn --bl --m" id="download-csv"><i class="fa-solid fa-download"></i>ダウンロード</button>
             </div>
         </div>
         <div class="modal micromodal-slide" id="modal-3">
@@ -265,6 +265,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js"></script>
     <script src="{{ asset('backend/js/vendors/micromodal.min.js') }}"></script>
     <script src="{{ asset('backend/js/setting.js') }}"></script>
+
+    <script>
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const buildingName = params.get('building_name') ?? '';
+        const roomNumber = params.get('room_number') ?? '';
+        const lastName = params.get('last_name') ?? '';
+        const firstName = params.get('first_name') ?? '';
+        const queryParams = new URLSearchParams({
+            building_name: buildingName,
+            room_number: roomNumber,
+            last_name: lastName,
+            first_name: firstName
+        });
+
+        document.getElementById('download-csv').addEventListener('click', function() {
+            fetch('{{ route('entry.download-csv') }}?' + queryParams, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'text/csv'
+                    }
+                })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'data.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Error downloading CSV:', error);
+                });
+        });
+    </script>
 </body>
 
 </html>
